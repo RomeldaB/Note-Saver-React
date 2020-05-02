@@ -1,5 +1,10 @@
 import React from "react";
+import Form from "../components/Form";
 
 export default function Authentication({ page }) {
-  return <div>Authentication {page}</div>;
+  return (
+    <section className="Auth">
+      <Form page={page} />
+    </section>
+  );
 }
