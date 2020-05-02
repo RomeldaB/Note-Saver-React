@@ -19,8 +19,7 @@ export default function AddUpdateNote(props) {
     noteToEdit ? noteToEdit.color : "lightpink"
   );
 
-  const handleSave = (e) => {
-    e.preventDefault();
+  const handleSave = () => {
     const noteData = {
       title: noteTitle,
       description: noteDescription,
