@@ -129,6 +129,7 @@ nav {
     padding: 20px;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-evenly;
   }
   .search {
     input {
@@ -139,9 +140,10 @@ nav {
     margin-top: 20px;
   }
   .note {
-    &:not(:first-child) {
-      margin-left: 20px;
-    }
+    margin-right: 20px;
+    margin-bottom: 20px;
+    width: 200px;
+    height: 200px;
     padding: 20px;
     display: flex;
     flex-direction: column;
