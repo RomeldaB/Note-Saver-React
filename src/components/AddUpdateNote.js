@@ -1,25 +1,37 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addNote, updateNote } from "../store/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { firebaseAdd, firebaseUpdate } from "../store/actions";
 
 export default function AddUpdateNote(props) {
   const dispatch = useDispatch();
+  const uid = useSelector((store) => store.firebase.uid);
+
   let noteToEdit = null;
   if (props.type === "edit") noteToEdit = props.note;
 
   const [noteTitle, setNoteTitle] = useState(
     noteToEdit ? noteToEdit.title : ""
   );
-
   const [noteDescription, setNoteDescription] = useState(
     noteToEdit ? noteToEdit.description : ""
   );
-
   const [noteColor, setNoteColor] = useState(
-    noteToEdit ? noteToEdit.color : "lightpink"
+    noteToEdit ? noteToEdit.color : "lightskyblue"
   );
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSave = () => {
+  const handleSave = (e) => {
+    e.preventDefault();
+
+    // Validation
+    if (noteTitle === "") {
+      setErrorMessage("Title cannot be left empty!!");
+      return;
+    } else if (noteDescription === "") {
+      setErrorMessage("Description cannot be left empty!!");
+      return;
+    }
+
     const noteData = {
       title: noteTitle,
       description: noteDescription,
@@ -27,9 +39,9 @@ export default function AddUpdateNote(props) {
     };
 
     if (noteToEdit) {
-      dispatch(updateNote(noteToEdit.id, noteData));
+      dispatch(firebaseUpdate(uid, noteToEdit.id, noteData));
     } else {
-      dispatch(addNote(noteData));
+      dispatch(firebaseAdd(uid, noteData));
     }
     handleCancel();
   };
@@ -40,7 +52,7 @@ export default function AddUpdateNote(props) {
   };
 
   return (
-    <section className="fixed-for-container">
+    <section className="fixed-form-container">
       <form>
         <h1>{props.type === "edit" ? "Edit Note" : "Add Note"}</h1>
 
@@ -61,41 +73,26 @@ export default function AddUpdateNote(props) {
           <div className="labels">Color</div>
           <select
             id="colors"
+            style={{ backgroundColor: noteColor }}
             value={noteColor}
             onChange={(e) => setNoteColor(e.target.value)}
           >
-            <option value="lightblue" style={{ backgroundColor: "lightblue" }}>
-              Blue
-            </option>
-            <option
-              value="lightcoral"
-              style={{ backgroundColor: "lightcoral" }}
-            >
-              Coral
-            </option>
-            <option value="lightcyan" style={{ backgroundColor: "lightcyan" }}>
-              Cyan
-            </option>
-            <option value="lightpink" style={{ backgroundColor: "lightpink" }}>
-              Pink
-            </option>
-            <option
-              value="lightsalmon"
-              style={{ backgroundColor: "lightsalmon" }}
-            >
-              Salmon
-            </option>
-            <option
-              value="lightseagreen"
-              style={{ backgroundColor: "lightseagreen" }}
-            >
-              Sea green
-            </option>
+            <option value="lightskyblue">Blue</option>
+            <option value="lightcoral">Red</option>
+            <option value="rgb(238, 238, 112)">Yellow</option>
+            <option value="lightpink">Pink</option>
+            <option value="lightsalmon">Orange</option>
+            <option value="lightseagreen">Green</option>
           </select>
         </div>
+        {errorMessage ? <h2>{errorMessage}</h2> : ""}
         <div className="buttons">
-          <button onClick={handleCancel}>Cancel</button>
-          <button onClick={handleSave}>Save</button>
+          <button id="cancel" onClick={handleCancel}>
+            Cancel
+          </button>
+          <button id="save" onClick={handleSave}>
+            Save
+          </button>
         </div>
       </form>
     </section>

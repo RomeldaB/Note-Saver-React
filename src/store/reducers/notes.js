@@ -1,32 +1,12 @@
-import { v4 } from "uuid";
 import * as actions from "../actions";
 
-const initialState = [
-  {
-    id: "aa",
-    title: "Ah jete!",
-    description: "Te dua sa me s'ka!",
-    color: "#123456",
-  },
-  {
-    id: "ab",
-    title: "Oh dashuria!",
-    description: "Te dua sa me s'ka!",
-    color: "#856993",
-  },
-  {
-    id: "cb",
-    title: "Te duaaaaaaaaa!",
-    description: "Te dua sa me s'ka!",
-    color: "#eed24a",
-  },
-];
-
-export default (state = initialState, action) => {
+export default (state = [], action) => {
   switch (action.type) {
     case actions.ADD_NOTE:
-      const id = v4();
-      return [...state, { id, ...action.data }];
+      const arrayOfIds = state.map((note) => note.id);
+      if (!arrayOfIds.includes(action.id))
+        return [...state, { id: action.id, ...action.data }];
+      else return state;
     case actions.DEL_NOTE:
       return state.filter((note) => note.id !== action.id);
     case actions.UPDATE_NOTE:
