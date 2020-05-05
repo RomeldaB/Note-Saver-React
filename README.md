@@ -1,4 +1,4 @@
-## A project built together with [http://www.github.com/JovanShandro](Jovan Shandro)
+## A project built together with [Jovan Shandro](http://www.github.com/JovanShandro)
 
 This project was done in order to learn more about React.js, especially concerning the authentication and real time database offered by Firebase.
 
